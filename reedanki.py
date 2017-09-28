@@ -14,7 +14,6 @@ from aqt.qt import *
 from pprint   import pprint as pp
 import re
 
-import cloze_overlapper.main
 #reload (philip.main)
 
 SOURCE_DECLENSION_MODEL = 1342704714050L
@@ -142,23 +141,11 @@ mw.form.menuTools.addAction(action)
 
 #### MORE FUN STUFF
 
-#NOT CURRENTLY USED STUFF
-# def philips_sandbox():
-  # for id in mw.col.findCards("deck:de.es-decl"):
-          # card = mw.col.getCard(id)
-
-  # last_card = card
-  # print(type(last_card.note()))
-  # print(type(last_card.note().model()))
-  # print(last_card.note().model())
-  # showInfo(last_card.note().model())
-
-
-# create a new menu item by this name
-# action = QAction("Philip's sandbox", mw)
-# action.triggered.connect(philips_sandbox)
-#mw.form.menuTools.addAction(action)
-
-# If we wanted to add a new model (note type)
-# model = mw.col.models.new("AAaaAA")
-# mw.col.models.add(model)
+#This worked 
+# import datetime
+# MOD = 1506565101476
+# new_note = mw.col.newNote()
+# new_note['Front'] = 'This is the front ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
+# new_note['Back'] = 'This is the back ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
+# new_count = mw.col.addNote(new_note)
+# print(new_count)
