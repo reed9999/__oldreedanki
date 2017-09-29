@@ -13,6 +13,7 @@ from aqt.utils import showInfo
 from aqt.qt import *
 from pprint   import pprint as pp
 import re
+import datetime
 
 #reload (philip.main)
 
@@ -23,6 +24,26 @@ DESTINATION_DECLENSION_MODEL = SOURCE_DECLENSION_MODEL
 _counter = 0
 _logstring = ""
 
+##### NEWER CODE
+# Try building from the ground up--something between a refactor and an overhaul.
+
+def assert_intended_model():
+  assert mw.col.models.current()['id'] == SOURCE_DECLENSION_MODEL
+  
+def create_hardcoded_note():
+  assert_intended_model()
+  new_note = mw.col.newNote()
+  new_note['Front'] = 'This is the front ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
+  new_note['Back'] = 'This is the back ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
+  new_note['declension_context'] = 'some context'
+  new_note['gender'] = 'm f n'
+  new_note['number'] = '1294'
+  new_note['case'] = 'suitcase'
+  new_count = mw.col.addNote(new_note)
+
+
+
+##### OLDER CODE
 
 #This isn't needed since we hard coded...
 #REFACTOR: don't hard code!
@@ -34,7 +55,9 @@ def id_for_first_model_matching(patt):
 
 
 def get_list_from_file():
-  filename = "C:/Users/reed9/AppData/Roaming/Anki2/addons/philip/config.txt"
+  import os
+  dir = os.path.dirname(__file__)
+  filename = os.path.join(dir, 'reedanki', 'config.txt')
   with open(filename) as f:
     lines = f.read().splitlines()   
   return lines
@@ -117,6 +140,13 @@ def silly_keys(the_keys):
     n += 33
   
 def main():
+  rv = create_hardcoded_note()
+  assert rv > 0
+  rv = create_hardcoded_note()
+  assert rv > 0
+  create_a_label("I CREATED 2 NOTES", 50)
+    
+def old_main():
   #import philip.main
 
   patt = "(.*) (.*)\. (.*)\. (.*)\."
