@@ -27,29 +27,26 @@ _logstring = ""
 ##### NEWER CODE
 # Try building from the ground up--something between a refactor and an overhaul.
 
-def assert_intended_model():
-  assert mw.col.models.current()['id'] == SOURCE_DECLENSION_MODEL
+def dangerous_exec():
+  import os
+  dir = os.path.dirname(__file__)
+
+  #https://stackoverflow.com/a/1463370/742573
+  ldict = locals()
   
-def create_hardcoded_note():
-  assert_intended_model()
-  new_note = mw.col.newNote()
-  new_note['Front'] = 'This is the front ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
-  new_note['Back'] = 'This is the back ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
-  new_note['declension_context'] = 'some context'
-  new_note['gender'] = 'm f n'
-  new_note['number'] = '1294'
-  new_note['case'] = 'suitcase'
-  new_count = mw.col.addNote(new_note)
-  return new_count
+  filename = os.path.join(dir, 'reedanki', 'arbitrary.py')
+  with open(filename, 'r') as the_file:
+    exec (the_file.read(), globals(), ldict) 
+  return ldict
+    
+def main():
+  ldict = dangerous_exec()
+  create_hardcoded_note = ldict['create_hardcoded_note']
+  rv = create_hardcoded_note()
+  assert rv > 0
+  create_a_label("I CREATED SOME NOTES", 50)
 
   
-def create_note(dict):
-  assert_intended_model()
-  new_note = mw.col.newNote()
-  for k, v in dict:
-    new_note[k] = v
-  new_count = mw.col.addNote(new_note)
-  return new_count
 
 ##### OLDER CODE
 
@@ -146,13 +143,7 @@ def silly_keys(the_keys):
   for a_key in the_keys:
     create_a_label(str(a_key), n)
     n += 33
-  
-def main():
-  rv = create_hardcoded_note()
-  assert rv > 0
-  rv = create_hardcoded_note()
-  assert rv > 0
-  create_a_label("I CREATED 2 NOTES", 50)
+
     
 def old_main():
   #import philip.main
@@ -171,6 +162,7 @@ def old_main():
 action = QAction("Philip declension", mw)
 action.triggered.connect(main)
 mw.form.menuTools.addAction(action)
+
 
 
 
