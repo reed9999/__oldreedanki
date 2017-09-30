@@ -40,8 +40,16 @@ def create_hardcoded_note():
   new_note['number'] = '1294'
   new_note['case'] = 'suitcase'
   new_count = mw.col.addNote(new_note)
+  return new_count
 
-
+  
+def create_note(dict):
+  assert_intended_model()
+  new_note = mw.col.newNote()
+  for k, v in dict:
+    new_note[k] = v
+  new_count = mw.col.addNote(new_note)
+  return new_count
 
 ##### OLDER CODE
 
