@@ -41,8 +41,8 @@ def dangerous_exec():
     
 def main():
   ldict = dangerous_exec()
-  create_hardcoded_note = ldict['create_hardcoded_note']
-  rv = create_hardcoded_note()
+  convert_notes_hardcoded_model = ldict['convert_notes_hardcoded_model']
+  rv = convert_notes_hardcoded_model()
   assert rv > 0
   create_a_label("I CREATED SOME NOTES", 50)
 
@@ -67,15 +67,7 @@ def get_list_from_file():
     lines = f.read().splitlines()   
   return lines
 
-def create_a_label(text, x=25):
-  label = QLabel()
-  label.setText(text)
-  label.setGeometry(x, 50, 500, 50,)
-  layout = mw.layout()
-  layout.addWidget(label)
-  mw.setLayout(layout)
-#mw.setCentralWidget(label) 
-
+#to use create_a_label see the locals() thing below 
 
 def make_new_declension_note():
   #This feels like it has an extra unneccessary step.
@@ -93,16 +85,16 @@ def make_new_declension_note():
   return new_note
 
   
-
-def convert_notes_of_model(source_model_id, dest_model_id, old_patt="(.*) (.*)\. (.*)\. (.*)\.", new_fields=[]):
-  all_source_note_ids = mw.col.findNotes("mid:%d" % source_model_id)
-  str = ''
-  rv_notes = list()
-  for id in all_source_note_ids:
-    new_note, s = convert_note(id, old_patt, new_fields)
-    str += s
-    rv_notes.append(new_note)
-  return rv_notes, str
+#moved to arbitrary.py
+# def convert_notes_of_model(source_model_id, dest_model_id, old_patt="(.*) (.*)\. (.*)\. (.*)\.", new_fields=[]):
+  # all_source_note_ids = mw.col.findNotes("mid:%d" % source_model_id)
+  # str = ''
+  # rv_notes = list()
+  # for id in all_source_note_ids:
+    # new_note, s = convert_note(id, old_patt, new_fields)
+    # str += s
+    # rv_notes.append(new_note)
+  # return rv_notes, str
 
   
 def convert_note(note_id, patt, new_fields):
@@ -145,21 +137,8 @@ def silly_keys(the_keys):
     n += 33
 
     
-def old_main():
-  #import philip.main
 
-  patt = "(.*) (.*)\. (.*)\. (.*)\."
-  fields=get_list_from_file()
-  global _logstring
-  try:
-    new_notes, rv = convert_notes_of_model(SOURCE_DECLENSION_MODEL, DESTINATION_DECLENSION_MODEL, patt, fields)
-  except:
-    showInfo(_logstring)
-    raise
-  showInfo(_logstring)
-  create_a_label("RV is %s" % rv, 25)
-
-action = QAction("Philip declension", mw)
+action = QAction("Philip: Run arbitrary.py", mw)
 action.triggered.connect(main)
 mw.form.menuTools.addAction(action)
 
@@ -179,3 +158,18 @@ mw.form.menuTools.addAction(action)
 # new_note['Back'] = 'This is the back ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
 # new_count = mw.col.addNote(new_note)
 # print(new_count)
+
+
+# def old_main():
+  # import philip.main
+
+  # patt = "(.*) (.*)\. (.*)\. (.*)\."
+  # fields=get_list_from_file()
+  # global _logstring
+  # try:
+    # new_notes, rv = convert_notes_of_model(SOURCE_DECLENSION_MODEL, DESTINATION_DECLENSION_MODEL, patt, fields)
+  # except:
+    # showInfo(_logstring)
+    # raise
+  # showInfo(_logstring)
+  # create_a_label("RV is %s" % rv, 25)
