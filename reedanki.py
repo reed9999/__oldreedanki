@@ -87,17 +87,9 @@ def make_new_declension_note():
   
 #moved to arbitrary.py
 # def convert_notes_of_model(source_model_id, dest_model_id, old_patt="(.*) (.*)\. (.*)\. (.*)\.", new_fields=[]):
-  # all_source_note_ids = mw.col.findNotes("mid:%d" % source_model_id)
-  # str = ''
-  # rv_notes = list()
-  # for id in all_source_note_ids:
-    # new_note, s = convert_note(id, old_patt, new_fields)
-    # str += s
-    # rv_notes.append(new_note)
-  # return rv_notes, str
+# def convert_note(note_id, patt, new_fields):
 
-  
-def convert_note(note_id, patt, new_fields):
+def old_convert_note(note_id, patt, new_fields):
   note = mw.col.getNote(note_id)
   the_match = re.match(patt, note['Front'])
   if (not the_match):
