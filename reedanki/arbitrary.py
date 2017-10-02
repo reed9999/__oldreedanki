@@ -42,11 +42,11 @@ def get_match_groups(patt, text):
   showInfo("Surprising. Didn't expect 100")
   return rv
   
-def dict_from(match_groups):
+def dict_from(match_groups, back):
   global dict_from
   return {
     'Front': 'dict_from front | ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"),
-    'Back': 'dict_from back | ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"),
+    'Back': back,
     'declension_context': match_groups[1],
     'gender': match_groups[2],
     'number': match_groups[3],
@@ -57,7 +57,7 @@ def convert_note(note_id, patt, new_fields):
   global get_match_groups
   src_note = mw.col.getNote(note_id)
   match_groups = get_match_groups(patt, src_note['Front'])
-  new_count = create_note(SOURCE_DECLENSION_MODEL, dict_from(match_groups))
+  new_count = create_note(SOURCE_DECLENSION_MODEL, dict_from(match_groups, src_note['Back']))
   return new_count
 #### Sooooo bloated  
 def old_convert_note(note_id, patt, new_fields):
@@ -98,10 +98,6 @@ def convert_notes_of_model(source_model_id, dest_model_id, old_patt="(.*) (.*)\.
   showInfo(msg)
   raise msg
 
-# def convert_note(id, old_patt, new_fields):
-  # showInfo("%d \n %s \n %s" % (id, old_patt, new_fields))
-  # return(None, "%d \n %s \n %s" % (id, old_patt, new_fields))
-  
 def convert_notes_hardcoded_model():
   global HC_EXAMPLE_DICT
   global convert_note
@@ -141,8 +137,8 @@ def do_dumb_shit():
   create_a_label("WHAT", 250)
   
 #do_dumb_shit()
-convert_notes_hardcoded_model()
-showInfo("convert_notes_hardcoded_model")
+list_of_counts = convert_notes_hardcoded_model()
+showInfo("convert_notes_hardcoded_model \n %s" % list_of_counts)
 # try: 
   # assert_intended_model(SOURCE_DECLENSION_MODEL)
 # except:
