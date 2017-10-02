@@ -3,7 +3,7 @@
 # action = QAction("Philip 2", mw)
 # action.triggered.connect(main)
 # mw.form.menuTools.addAction(action)
-HC_EXAMPLE_DICT =   dict = {
+HC_EXAMPLE_DICT = {
     'Front': 'This is the front ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"),
     'Back': 'This is the back ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"),
     'declension_context': 'some context',
@@ -11,6 +11,24 @@ HC_EXAMPLE_DICT =   dict = {
     'number': 'singular',
     'case': 'nominagenitavocative',
   }
+
+
+def assert_intended_model(model_id=SOURCE_DECLENSION_MODEL):
+  assert mw.col.models.current()['id'] == model_id
+
+def create_note(model_id, dict):
+  assert_intended_model(model_id)
+  new_note = mw.col.newNote()
+  for k, v in dict.iteritems():
+    new_note[k] = v
+  new_count = mw.col.addNote(new_note)
+  return new_count
+  
+def create_hardcoded_note():
+  global assert_intended_model
+  global create_note
+  dict = HC_EXAMPLE_DICT
+  return create_note(SOURCE_DECLENSION_MODEL, dict)
 
 #Probably some library implementation of this?
 def get_match_groups(patt, text): 
@@ -23,13 +41,24 @@ def get_match_groups(patt, text):
       return rv
   showInfo("Surprising. Didn't expect 100")
   return rv
+  
+def dict_from(match_groups):
+  global dict_from
+  return {
+    'Front': 'dict_from front | ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"),
+    'Back': 'dict_from back | ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"),
+    'declension_context': match_groups[1],
+    'gender': match_groups[2],
+    'number': match_groups[3],
+    'case': match_groups[4],
+  }
+
 def convert_note(note_id, patt, new_fields):
   global get_match_groups
   src_note = mw.col.getNote(note_id)
   match_groups = get_match_groups(patt, src_note['Front'])
-  showInfo(str(len(match_groups)))
-  showInfo(match_groups[1])
-  
+  new_count = create_note(SOURCE_DECLENSION_MODEL, dict_from(match_groups))
+  return new_count
 #### Sooooo bloated  
 def old_convert_note(note_id, patt, new_fields):
   note = mw.col.getNote(note_id)
@@ -63,24 +92,7 @@ def old_convert_note(note_id, patt, new_fields):
 
   _logstring += ("new count of notes is %d\n" % new_count)
   return (new_note, str)
-
-def assert_intended_model(model_id=SOURCE_DECLENSION_MODEL):
-  assert mw.col.models.current()['id'] == model_id
-
-def create_note(model_id, dict):
-  assert_intended_model(model_id)
-  new_note = mw.col.newNote()
-  for k, v in dict.iteritems():
-    new_note[k] = v
-  new_count = mw.col.addNote(new_note)
-  return new_count
   
-def create_hardcoded_note():
-  global assert_intended_model
-  global create_note
-  dict = HC_EXAMPLE_DICT
-  return create_note(SOURCE_DECLENSION_MODEL, dict)
-
 def convert_notes_of_model(source_model_id, dest_model_id, old_patt="(.*) (.*)\. (.*)\. (.*)\.", new_fields=[]):
   msg = "convert_notes_of_model() is a little too spaghetti code for us to use right now, but come back to this."
   showInfo(msg)

@@ -40,11 +40,12 @@ def dangerous_exec():
   return ldict
     
 def main():
+
   ldict = dangerous_exec()
   convert_notes_hardcoded_model = ldict['convert_notes_hardcoded_model']
   rv = convert_notes_hardcoded_model()
   assert rv > 0
-  create_a_label("I CREATED SOME NOTES", 50)
+#  create_a_label("I CREATED SOME NOTES", 50)
 
   
 
