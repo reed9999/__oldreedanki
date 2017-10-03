@@ -1,3 +1,6 @@
+
+# SOURCE_DECLENSION = 'de-declin' #remove this; it's redundant
+SOURCE_DECLENSION = 'Cloze' #temp
 # from aqt import mw
 
 # action = QAction("Philip 2", mw)
@@ -13,11 +16,16 @@ HC_EXAMPLE_DICT = {
   }
 
 
-def assert_intended_model(model_id=SOURCE_DECLENSION_MODEL):
-  assert mw.col.models.current()['id'] == model_id
+def assert_intended_model(model_name=SOURCE_DECLENSION):
+  showInfo( str(model_name))
+  showInfo( str(mw.col.models.byName(model_name)))
+  showInfo( str(mw.col.models.byName(model_name)['id'] ))
+  
+  assert mw.col.models.current()['id'] == mw.col.models.byName(model_name)['id']
+  assert mw.col.models.current()['id'] == mw.col.models.byName(model_name)['id']
 
-def create_note(model_id, dict):
-  assert_intended_model(model_id)
+def create_note(model_name, dict):
+  assert_intended_model(model_name)
   new_note = mw.col.newNote()
   for k, v in dict.iteritems():
     new_note[k] = v
@@ -25,10 +33,9 @@ def create_note(model_id, dict):
   return new_count
   
 def create_hardcoded_note():
-  global assert_intended_model
   global create_note
   dict = HC_EXAMPLE_DICT
-  return create_note(SOURCE_DECLENSION_MODEL, dict)
+  return create_note(SOURCE_DECLENSION, dict)
 
 #Probably some library implementation of this?
 def get_match_groups(patt, text): 
@@ -54,10 +61,11 @@ def dict_from(match_groups, back):
   }
 
 def convert_note(note_id, patt, new_fields):
+  global SOURCE_DECLENSION
   global get_match_groups
   src_note = mw.col.getNote(note_id)
   match_groups = get_match_groups(patt, src_note['Front'])
-  new_count = create_note(SOURCE_DECLENSION_MODEL, dict_from(match_groups, src_note['Back']))
+  new_count = create_note(SOURCE_DECLENSION, dict_from(match_groups, src_note['Back']))
   return new_count
 #### Sooooo bloated  
 def old_convert_note(note_id, patt, new_fields):
