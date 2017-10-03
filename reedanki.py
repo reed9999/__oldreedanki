@@ -51,8 +51,7 @@ def main():
 
 ##### OLDER CODE
 
-#This isn't needed since we hard coded...
-#REFACTOR: don't hard code!
+#This is redundant. See anki code,  m = self.deck.models.byName(name)
 def id_for_first_model_matching(patt):
   all_models = mw.col.models.all()
   for model in all_models:

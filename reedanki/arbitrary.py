@@ -149,3 +149,22 @@ showInfo("convert_notes_hardcoded_model \n %s" % list_of_counts)
 # assert rv > 0
 
 # showInfo("Worked even better!")
+
+
+#HOW TO ACTUALLY CHANGE THE CURRENT DECK
+#See the code here: 
+#https://github.com/dae/anki/blob/master/aqt/modelchooser.py
+
+# m = self.deck.models.byName(ret.name)
+# self.deck.conf['curModel'] = m['id']
+# cdeck = self.deck.decks.current()
+# cdeck['mid'] = m['id']
+# self.deck.decks.save(cdeck)
+
+#In our environment it's like this:         
+# s = 'Cloze'
+# m = mw.col.models.byName(s)
+# cdeck = mw.col.decks.current()
+# cdeck['mid']= m['id']
+# rv=mw.col.decks.save(cdeck)        
+#END HOW TO ACTUALLY CHANGE THE CURRENT DECK
