@@ -1,6 +1,4 @@
-
-# SOURCE_DECLENSION = 'de-declin' #remove this; it's redundant
-SOURCE_DECLENSION = 'Cloze' #temp
+SOURCE_DECLENSION = 'de-declin' #remove this; it's redundant
 # from aqt import mw
 
 # action = QAction("Philip 2", mw)
@@ -16,15 +14,20 @@ HC_EXAMPLE_DICT = {
   }
 
 
-def assert_intended_model(model_name=SOURCE_DECLENSION):
-  showInfo( str(model_name))
-  showInfo( str(mw.col.models.byName(model_name)))
-  showInfo( str(mw.col.models.byName(model_name)['id'] ))
+def set_current_model(model_name=SOURCE_DECLENSION):
+  model = mw.col.models.byName(model_name)
+  cdeck = mw.col.decks.current()
+  cdeck['mid']= model['id']
+  return mw.col.decks.save(cdeck)        
   
-  assert mw.col.models.current()['id'] == mw.col.models.byName(model_name)['id']
+
+def assert_intended_model(model_name=SOURCE_DECLENSION):
   assert mw.col.models.current()['id'] == mw.col.models.byName(model_name)['id']
 
 def create_note(model_name, dict):
+  global set_current_model
+  global assert_intended_model
+  #set_current_model(model_name)
   assert_intended_model(model_name)
   new_note = mw.col.newNote()
   for k, v in dict.iteritems():
@@ -115,7 +118,7 @@ def convert_notes_hardcoded_model():
   new_fields=HC_EXAMPLE_DICT.keys()
 
   all_source_note_ids = mw.col.findNotes("mid:%d" % source_model_id)
-  THROTTLE = 3
+  THROTTLE = 2
   all_source_note_ids = all_source_note_ids[0 : THROTTLE]
   rv_notes = [convert_note(id, old_patt, new_fields) for id in all_source_note_ids]
   return rv_notes
