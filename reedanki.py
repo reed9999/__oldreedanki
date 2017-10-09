@@ -44,9 +44,11 @@ def main():
 
   ldict = dangerous_exec()
   convert_notes_hardcoded_model = ldict['convert_notes_hardcoded_model']
-  rv = convert_notes_hardcoded_model()
-  assert rv > 0
-#  create_a_label("I CREATED SOME NOTES", 50)
+
+#This approach does actually work but for now I will do everything dynamically.
+#  rv = convert_notes_hardcoded_model()
+#  assert rv > 0
+  create_a_label("I CREATED SOME NOTES (maybe)", 50)
 
   
 
