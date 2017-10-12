@@ -39,15 +39,26 @@ def dangerous_exec():
   with open(filename, 'r') as the_file:
     exec (the_file.read(), globals(), ldict) 
   return ldict
-    
+
+###GUI
+def create_a_label(text, x=25):
+  label = QLabel()
+  label.setText(text)
+  label.setGeometry(x, x/2 , 300 , 300,)
+  layout = mw.layout()
+  layout.addWidget(label)
+  mw.setLayout(layout)
+
+  
 def main():
 
-  ldict = dangerous_exec()
-  convert_notes_hardcoded_model = ldict['convert_notes_hardcoded_model']
 
-#This approach does actually work but for now I will do everything dynamically.
+#Hang onto this code somewhere because it's how I want to run dynamically in the future.
+  ldict = dangerous_exec()
+#  convert_notes_hardcoded_model = ldict['convert_notes_hardcoded_model']
 #  rv = convert_notes_hardcoded_model()
 #  assert rv > 0
+
   create_a_label("I CREATED SOME NOTES (maybe)", 50)
 
   
@@ -131,6 +142,81 @@ def silly_keys(the_keys):
     create_a_label(str(a_key), n)
     n += 33
 
+    
+### BAD STUFF ABOVE? NOT SURE
+### PASTE IN
+
+HC_EXAMPLE_DICT = {
+    'Front': 'This is the front ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"),
+    'Back': 'This is the back ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"),
+    'declension_context': 'some context',
+    'gender': 'm f n',
+    'number': 'singular',
+    'case': 'nominagenitavocative',
+  }
+
+
+def set_current_model(model_name=SOURCE_DECLENSION):
+  model = mw.col.models.byName(model_name)
+  cdeck = mw.col.decks.current()
+  cdeck['mid']= model['id']
+  return mw.col.decks.save(cdeck)        
+  
+
+def assert_intended_model(model_name=SOURCE_DECLENSION):
+  assert mw.col.models.current()['id'] == mw.col.models.byName(model_name)['id']
+
+def create_note(model_name, dict):
+  global set_current_model
+  global assert_intended_model
+  set_current_model(model_name)
+  #assert_intended_model(model_name)
+  new_note = mw.col.newNote()
+  for k, v in dict.iteritems():
+    new_note[k] = v
+  new_count = mw.col.addNote(new_note)
+  return new_count
+  
+def create_hardcoded_note():
+  global create_note
+  dict = HC_EXAMPLE_DICT
+  return create_note(SOURCE_DECLENSION, dict)
+
+#Probably some library implementation of this?
+def get_match_groups(patt, text): 
+  rv = []
+  match = re.match(patt, text)
+  for i in range (0, 100):    #I don't really want [0] but keep for standardization
+    try:
+      rv.append(match.group(i))
+    except:
+      return rv
+  showInfo("Surprising. Didn't expect 100")
+  return rv
+  
+def dict_from(match_groups, back):
+  global dict_from
+  return {
+    'Front': 'PHILIP dict_from front | ' +  datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"),
+    'Back': back,
+    'declension_context': match_groups[1],
+    'gender': match_groups[2],
+    'number': match_groups[3],
+    'case': match_groups[4],
+  }
+
+def convert_note(note_id, patt, new_fields):
+  global SOURCE_DECLENSION
+  global get_match_groups
+  src_note = mw.col.getNote(note_id)
+  match_groups = get_match_groups(patt, src_note['Front'])
+  new_count = create_note(SOURCE_DECLENSION, dict_from(match_groups, src_note['Back']))
+  return new_count
+
+
+### END PASTE IN
+###     
+###     
     
 
 action = QAction("Philip: Run arbitrary.py", mw)
