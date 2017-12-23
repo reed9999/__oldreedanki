@@ -290,6 +290,17 @@ mw.form.menuTools.addAction(action)
   # create_a_label("RV is %s" % rv, 25)
 
 
+	###########################################################################
+
+### __init__.py but still was live
+#This is redundant. See anki code,  m = self.deck.models.byName(name)
+def id_for_first_model_matching(patt):
+  all_models = mw.col.models.all()
+  for model in all_models:
+    if re.match(patt, model['name']):
+      return model['id']
+
+
 
 ################################################################################
 # From my arbitrary.py file.
@@ -372,3 +383,14 @@ mw.form.menuTools.addAction(action)
 # cdeck['mid']= m['id']
 # rv=mw.col.decks.save(cdeck)        
 #END HOW TO ACTUALLY CHANGE THE CURRENT DECK
+
+
+### arbitrary.py but still was live
+def convert_notes_of_model(source_model_id, dest_model_id, old_patt="(.*) (.*)\. (.*)\. (.*)\.", new_fields=[]):
+  msg = "convert_notes_of_model() is a little too spaghetti code for us to use right now, but come back to this."
+  showInfo(msg)
+  raise msg
+
+
+
+

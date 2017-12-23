@@ -1,8 +1,8 @@
+from reedanki.library import HC_EXAMPLE_DICT, convert_note
+from aqt import mw
+
+
 ### SOURCE_DECLENSION = 'de-declin' #remove this; it's redundant
-def convert_notes_of_model(source_model_id, dest_model_id, old_patt="(.*) (.*)\. (.*)\. (.*)\.", new_fields=[]):
-  msg = "convert_notes_of_model() is a little too spaghetti code for us to use right now, but come back to this."
-  showInfo(msg)
-  raise msg
 
 def convert_notes_hardcoded_model():
   global HC_EXAMPLE_DICT
@@ -24,6 +24,10 @@ def convert_notes_hardcoded_model():
   
 #MW=mw
 def do_dumb_shit():
+  button = QPushButton('PHILIP')
+  button.show()
+
+
   action = QAction("A bogus item " + datetime.datetime.now().strftime("%I:%M%p "), mw)
   action.triggered.connect(dir)
   # mw.form.menuTools.addAction(action)
@@ -35,5 +39,7 @@ def do_dumb_shit():
   
 
 list_of_counts = convert_notes_hardcoded_model()
-showInfo("convert_notes_hardcoded_model \n %s" % list_of_counts)
+# showInfo("convert_notes_hardcoded_model \n %s" % list_of_counts)
+do_dumb_shit()
+showInfo("I just did dumb stuff and created a button.")
 
