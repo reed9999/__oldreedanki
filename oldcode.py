@@ -1,3 +1,12 @@
+################################################################################
+# Backup code -- stuff I tried maybe worth keeping, maybe not.
+
+
+################################################################################
+# From my old main file.
+
+
+
 ####
 # Right now the goal is to go through a particular (later, aribtrary)
 # note type, parse out the content according to a regex, and put the 
@@ -5,12 +14,37 @@
 # note type
 
 
+
+
+# See https://apps.ankiweb.net/docs/addons21.html
+
 # import the main window object (mw) from aqt
 from aqt import mw
 # import the "show info" tool from utils.py
 from aqt.utils import showInfo
 # import all of the Qt GUI library
 from aqt.qt import *
+
+# We're going to add a menu item below. First we want to create a function to
+# be called when the menu item is activated.
+
+def testFunction():
+    # get the number of cards in the current collection, which is stored in
+    # the main window
+    cardCount = mw.col.cardCount()
+    # show a message box
+    showInfo("Card count: %d" % cardCount)
+
+# create a new menu item, "test"
+action = QAction("test", mw)
+# set it to call testFunction when it's clicked
+action.triggered.connect(testFunction)
+# and add it to the tools menu
+mw.form.menuTools.addAction(action)
+
+
+
+
 from pprint   import pprint as pp
 import re
 import datetime
@@ -20,7 +54,7 @@ import datetime
 SOURCE_DECLENSION = 'de-declin'
 SOURCE_DECLENSION_MODEL = 1342704714050L
 WEIRD_DECLENSION_MODEL = 1450932830892L
-DESTINATION_DECLENSION_MODEL = SOURCE_DECLENSION_MODEL
+# # DESTINATION_DECLENSION_MODEL = SOURCE_DECLENSION_MODEL
 
 _counter = 0
 _logstring = ""
@@ -219,7 +253,7 @@ def convert_note(note_id, patt, new_fields):
 ###     
     
 
-action = QAction("Philip: Run arbitrary.py", mw)
+action = QAction("Philip (from the .local place): Run arbitrary.py", mw)
 action.triggered.connect(main)
 mw.form.menuTools.addAction(action)
 
@@ -254,3 +288,87 @@ mw.form.menuTools.addAction(action)
     # raise
   # showInfo(_logstring)
   # create_a_label("RV is %s" % rv, 25)
+
+
+
+################################################################################
+# From my arbitrary.py file.
+
+# from aqt import mw
+
+# action = QAction("Philip 2", mw)
+# action.triggered.connect(main)
+# mw.form.menuTools.addAction(action)
+
+
+
+#### Sooooo bloated  
+# def old_convert_note(note_id, patt, new_fields):
+  # note = mw.col.getNote(note_id)
+  # the_match = re.match(patt, note['Front'])
+  # if (not the_match):
+    ##showInfo("Could not match %s with %s" % (patt, note['Front'] ))
+    # return (None, 'No equivalent')
+
+
+  # the_dict = {}
+  # new_note=make_new_declension_note()
+  # for i in range(1,5):
+    # try:
+      # new_note[new_fields[i-1]] = the_match.group(i)
+    # except KeyError:
+      # print( "You probably used a note type without a field for " + new_fields[i-1])
+      # silly_keys(new_note.keys()) 
+
+      # raise
+  # global _logstring
+  # _logstring += "\nstr is %s\n" % str
+  # mw.col.log("str is %s" % str)
+  
+  # new_note['Front'] += "SYNTHETIC: "
+  # new_count = mw.col.addNote(new_note)
+
+  # _logstring += ("new count of notes is %d\n" % new_count)
+  # return (new_note, str)
+  
+## GUI STUFF
+#create_a_label removed from here to reedanki.
+#mw.setCentralWidget(label) 
+
+#Diagnostic
+# all_source_note_ids = mw.col.findNotes("mid:%d" % SOURCE_DECLENSION_MODEL)
+# id = all_source_note_ids[0]
+# old_patt="(.*) (.*)\. (.*)\. (.*)\."
+# new_fields=HC_EXAMPLE_DICT.keys()
+# rv=convert_note(id, old_patt, new_fields)
+# showInfo(str(rv))
+
+# try: 
+  # assert_intended_model(SOURCE_DECLENSION_MODEL)
+# except:
+  # showInfo("Bad model %s" % mw.col.models.current()['id'])
+
+
+# rv = create_hardcoded_note()
+# assert rv > 0
+
+# showInfo("Worked even better!")
+
+
+#HOW TO ACTUALLY CHANGE THE CURRENT DECK
+#See the code here: 
+#https://github.com/dae/anki/blob/master/aqt/modelchooser.py
+
+# m = self.deck.models.byName(ret.name)
+# self.deck.conf['curModel'] = m['id']
+# cdeck = self.deck.decks.current()
+# cdeck['mid'] = m['id']
+# self.deck.decks.save(cdeck)
+
+#In our environment it's like this:         
+# s = 'Cloze'
+# m = mw.col.models.byName(s)
+# cdeck = mw.col.decks.current()
+# cdeck['mid']= m['id']
+# rv=mw.col.decks.save(cdeck)        
+#END HOW TO ACTUALLY CHANGE THE CURRENT DECK
