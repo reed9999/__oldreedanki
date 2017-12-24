@@ -124,7 +124,7 @@ def create_note(model_name, dict):
   
 def create_hardcoded_note():
   global create_note
-  global HC_EXAMPLE_DICT
+  #global HC_EXAMPLE_DICT
 
   dict = HC_EXAMPLE_DICT
   return create_note(SOURCE_DECLENSION, dict)

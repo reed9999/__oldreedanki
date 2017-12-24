@@ -1,6 +1,18 @@
-from reedanki.library import HC_EXAMPLE_DICT, convert_note
+from reedanki.library import * 
+from aqt.utils import tooltip
+print(type(tooltip))
+print (type(HC_EXAMPLE_DICT))
+print("****XXX")
+print(type(convert_note))
+
 from aqt import mw
 
+def foo():
+	print("In foo")
+	print (type(HC_EXAMPLE_DICT))
+	print("YY****XXX")
+	print(type(library.convert_note))
+foo()
 
 ### SOURCE_DECLENSION = 'de-declin' #remove this; it's redundant
 
