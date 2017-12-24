@@ -1,23 +1,20 @@
-from reedanki.library import * 
-from aqt.utils import tooltip
-print(type(tooltip))
-print (type(HC_EXAMPLE_DICT))
-print("****XXX")
-print(type(convert_note))
-
 from aqt import mw
+import re
+import importlib
+importlib.reload(reedlibrary)
 
-def foo():
-	print("In foo")
-	print (type(HC_EXAMPLE_DICT))
-	print("YY****XXX")
-	print(type(library.convert_note))
-foo()
+## This is profoundly inelegant but I don't know best practices for constants
+# in an Anki addon. Module import-s do not behave as normal Python   
+HC_EXAMPLE_DICT = reedlibrary.HC_EXAMPLE_DICT
+SOURCE_DECLENSION_MODEL = reedlibrary.SOURCE_DECLENSION_MODEL
+SOURCE_DECLENSION = reedlibrary.SOURCE_DECLENSION
+convert_note = reedlibrary.convert_note
 
-### SOURCE_DECLENSION = 'de-declin' #remove this; it's redundant
+
 
 def convert_notes_hardcoded_model():
   global HC_EXAMPLE_DICT
+  global SOURCE_DECLENSION_MODEL
   global convert_note
   source_model_id = SOURCE_DECLENSION_MODEL
   dest_model_id = source_model_id

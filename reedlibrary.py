@@ -1,5 +1,6 @@
 #library
 import datetime
+import re
 from aqt import mw
 
 SOURCE_DECLENSION = 'de-declin'
@@ -16,6 +17,8 @@ def create_a_label(text, x=25):
   layout = mw.layout()
   layout.addWidget(label)
   mw.setLayout(layout)
+  
+
 
 ##### OLDER CODE
 
@@ -131,6 +134,8 @@ def create_hardcoded_note():
 
 #Probably some library implementation of this?
 def get_match_groups(patt, text): 
+  global re		#I have no clue why this would ever be necessary!
+  import re		#I have no clue why this would ever be necessary!
   rv = []
   match = re.match(patt, text)
   for i in range (0, 100):    #I don't really want [0] but keep for standardization
